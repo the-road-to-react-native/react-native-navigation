@@ -1,90 +1,95 @@
-import * as React from 'react';
-import { View, Button } from 'react-native';
+import React from 'react';
+import { Button } from 'react-native';
 import {
   NavigationContainer,
+  DrawerActions,
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-const Tab = createBottomTabNavigator();
+import LandingScreen from './components/Landing';
+import SignInScreen from './components/SignIn';
+import SignUpScreen from './components/SignUp';
+import HomeScreen from './components/Home';
+import AccountScreen from './components/Account';
+import PasswordChangeScreen from './components/PasswordChange';
+import PasswordForgetScreen from './components/PasswordForget';
 
-const AuthenticatedTabs = () => {
+const Drawer = createDrawerNavigator();
+
+const HomeTabs = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
-    </Tab.Navigator>
-  );
-};
-
-const LandingScreen = ({ navigation }) => {
-  return (
-    <View>
-      <Button
-        title="Go to SignIn"
-        onPress={() => navigation.navigate('SignIn')}
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Account" component={AccountScreen} />
+      <Drawer.Screen
+        name="PasswordForget"
+        component={PasswordForgetScreen}
       />
-    </View>
-  );
-};
-
-const SignInScreen = ({ navigation }) => {
-  return (
-    <View>
-      <Button
-        title="Go to Landing"
-        onPress={() => navigation.navigate('Landing')}
+      <Drawer.Screen
+        name="PasswordChange"
+        component={PasswordChangeScreen}
       />
-    </View>
+    </Drawer.Navigator>
   );
 };
 
-const HomeScreen = ({ navigation }) => {
-  return (
-    <View>
-      <Button
-        title="Go to Account"
-        onPress={() => navigation.navigate('Account')}
-      />
-    </View>
-  );
-};
-
-const AccountScreen = ({ navigation }) => {
-  return (
-    <View>
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-};
-
-const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 const App = () => {
-  const isLoggedIn = true;
+  const [isSignedIn, setIsSignedIn] = React.useState(false);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {isLoggedIn ? (
-          <Stack.Screen
+      <RootStack.Navigator>
+        {isSignedIn ? (
+          <RootStack.Screen
             name="Home"
-            component={AuthenticatedTabs}
-            options={({ route }) => ({
+            component={HomeTabs}
+            options={({ navigation, route }) => ({
               headerTitle: getFocusedRouteNameFromRoute(route),
+              headerLeft: () => (
+                <Button
+                  onPress={() =>
+                    navigation.dispatch(DrawerActions.toggleDrawer())
+                  }
+                  title="Menu"
+                />
+              ),
+              headerRight: () => (
+                <Button
+                  onPress={() => setIsSignedIn(false)}
+                  title="Sign Out"
+                />
+              ),
             })}
           />
         ) : (
           <>
-            <Stack.Screen name="Landing" component={LandingScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <RootStack.Screen
+              name="Landing"
+              component={LandingScreen}
+            />
+            <RootStack.Screen name="SignIn">
+              {(props) => (
+                <SignInScreen
+                  {...props}
+                  onSignIn={() => setIsSignedIn(true)}
+                />
+              )}
+            </RootStack.Screen>
+            <RootStack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+            />
+            <RootStack.Screen
+              name="PasswordForget"
+              component={PasswordForgetScreen}
+            />
           </>
         )}
-      </Stack.Navigator>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

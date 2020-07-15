@@ -2,6 +2,18 @@ import * as React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
+
+const AuthenticatedTabs = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Account" component={AccountScreen} />
+    </Tab.Navigator>
+  );
+};
 
 const LandingScreen = ({ navigation }) => {
   return (
@@ -60,10 +72,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         {isLoggedIn ? (
-          <>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Account" component={AccountScreen} />
-          </>
+          <Stack.Screen name="Home" component={AuthenticatedTabs} />
         ) : (
           <>
             <Stack.Screen name="Landing" component={LandingScreen} />

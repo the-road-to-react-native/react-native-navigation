@@ -8,8 +8,20 @@ const LandingScreen = ({ navigation }) => {
     <View style={styles.center}>
       <Text>Landing Screen</Text>
       <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
+        title="Go to SignIn"
+        onPress={() => navigation.navigate('SignIn')}
+      />
+    </View>
+  );
+};
+
+const SignInScreen = ({ navigation }) => {
+  return (
+    <View style={styles.center}>
+      <Text>SignIn Screen</Text>
+      <Button
+        title="Go to Landing"
+        onPress={() => navigation.navigate('Landing')}
       />
     </View>
   );
@@ -20,8 +32,20 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.center}>
       <Text>Home Screen</Text>
       <Button
-        title="Go to Landing"
-        onPress={() => navigation.navigate('Landing')}
+        title="Go to Account"
+        onPress={() => navigation.navigate('Account')}
+      />
+    </View>
+  );
+};
+
+const AccountScreen = ({ navigation }) => {
+  return (
+    <View style={styles.center}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Home"
+        onPress={() => navigation.navigate('Home')}
       />
     </View>
   );
@@ -30,11 +54,22 @@ const HomeScreen = ({ navigation }) => {
 const Stack = createStackNavigator();
 
 const App = () => {
+  const isLoggedIn = true;
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Account" component={AccountScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Landing" component={LandingScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,36 +1,44 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-function HomeScreen() {
-  return (
-    <View style={styles.center}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
-
-function LandingScreen() {
+const LandingScreen = ({ navigation }) => {
   return (
     <View style={styles.center}>
       <Text>Landing Screen</Text>
+      <Button
+        title="Go to Home"
+        onPress={() => navigation.navigate('Home')}
+      />
     </View>
   );
-}
+};
+
+const HomeScreen = ({ navigation }) => {
+  return (
+    <View style={styles.center}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Landing"
+        onPress={() => navigation.navigate('Landing')}
+      />
+    </View>
+  );
+};
 
 const Stack = createStackNavigator();
 
-function App() {
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator initialRouteName="Landing">
         <Stack.Screen name="Landing" component={LandingScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   center: {

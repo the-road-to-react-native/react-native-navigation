@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, Button } from 'react-native';
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -17,8 +20,7 @@ const AuthenticatedTabs = () => {
 
 const LandingScreen = ({ navigation }) => {
   return (
-    <View style={styles.center}>
-      <Text>Landing Screen</Text>
+    <View>
       <Button
         title="Go to SignIn"
         onPress={() => navigation.navigate('SignIn')}
@@ -29,8 +31,7 @@ const LandingScreen = ({ navigation }) => {
 
 const SignInScreen = ({ navigation }) => {
   return (
-    <View style={styles.center}>
-      <Text>SignIn Screen</Text>
+    <View>
       <Button
         title="Go to Landing"
         onPress={() => navigation.navigate('Landing')}
@@ -41,8 +42,7 @@ const SignInScreen = ({ navigation }) => {
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.center}>
-      <Text>Home Screen</Text>
+    <View>
       <Button
         title="Go to Account"
         onPress={() => navigation.navigate('Account')}
@@ -53,8 +53,7 @@ const HomeScreen = ({ navigation }) => {
 
 const AccountScreen = ({ navigation }) => {
   return (
-    <View style={styles.center}>
-      <Text>Home Screen</Text>
+    <View>
       <Button
         title="Go to Home"
         onPress={() => navigation.navigate('Home')}
@@ -72,7 +71,13 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         {isLoggedIn ? (
-          <Stack.Screen name="Home" component={AuthenticatedTabs} />
+          <Stack.Screen
+            name="Home"
+            component={AuthenticatedTabs}
+            options={({ route }) => ({
+              headerTitle: getFocusedRouteNameFromRoute(route),
+            })}
+          />
         ) : (
           <>
             <Stack.Screen name="Landing" component={LandingScreen} />
@@ -83,13 +88,5 @@ const App = () => {
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;

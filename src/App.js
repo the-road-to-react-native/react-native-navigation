@@ -70,6 +70,11 @@ const App = () => {
             <RootStack.Screen
               name="Landing"
               component={LandingScreen}
+              options={{
+                // When logging out, a pop animation feels intuitive
+                // You can remove this if you want the default 'push' animation
+                animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
+              }}
             />
             <RootStack.Screen name="SignIn">
               {(props) => (

@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, Button } from 'react-native';
 
-const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = ({ onSignUp }) => {
   return (
     <View>
-      <Button
-        title="Go to Landing"
-        onPress={() => navigation.navigate('Landing')}
-      />
+      <Button title="Sign Up" onPress={onSignUp} />
     </View>
   );
 };

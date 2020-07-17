@@ -7,8 +7,8 @@ const LandingScreen = ({ navigation }) => {
       <Text>Public Landing Screen</Text>
 
       <Button
-        title="Go to SignIn"
-        onPress={() => navigation.navigate('SignIn')}
+        title="Go to Sign In"
+        onPress={() => navigation.navigate('Sign In')}
       />
     </View>
   );

@@ -9,15 +9,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import LandingScreen from './components/Landing';
-import SignInScreen from './components/SignIn';
-import SignUpScreen from './components/SignUp';
-import HomeScreen from './components/Home';
-import ProfileScreen from './components/Profile';
-import AccountScreen from './components/Account';
-import AdminScreen from './components/Admin';
-import PasswordChangeScreen from './components/PasswordChange';
-import PasswordForgetScreen from './components/PasswordForget';
+import LandingScreen from './screens/Landing';
+import SignInScreen from './screens/SignIn';
+import SignUpScreen from './screens/SignUp';
+import PasswordForgetScreen from './screens/PasswordForget';
+import PasswordChangeScreen from './screens/PasswordChange';
+import HomeScreen from './screens/Home';
+import ProfileScreen from './screens/Profile';
+import AccountScreen from './screens/Account';
+import AdminScreen from './screens/Admin';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +34,7 @@ const Drawer = createDrawerNavigator();
 
 const HomeDrawer = () => {
   return (
-    <Drawer.Navigator initialRouteName="Home">
+    <Drawer.Navigator>
       <Drawer.Screen name="Home" component={HomeTabs} />
       <Drawer.Screen name="Account" component={AccountScreen} />
       <Drawer.Screen
@@ -53,34 +53,34 @@ const HomeDrawer = () => {
 const RootStack = createStackNavigator();
 
 const App = () => {
-  const [isSignedIn, setIsSignedIn] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
   const handleSignIn = () => {
-    // TODO
+    // TODO implement real sign in mechanism
 
-    setIsSignedIn(true);
+    setIsAuthenticated(true);
   };
 
   const handleSignOut = () => {
-    // TODO
+    // TODO implement real sign out mechanism
 
-    setIsSignedIn(false);
+    setIsAuthenticated(false);
   };
 
   const handleSignUp = () => {
-    // TODO
+    // TODO implement real sign up mechanism
 
-    setIsSignedIn(true);
+    setIsAuthenticated(true);
   };
 
   return (
     <NavigationContainer>
       <RootStack.Navigator>
-        {isSignedIn ? (
+        {isAuthenticated ? (
           <RootStack.Screen
             name="Home"
             component={HomeDrawer}
-            options={({ navigation, route }) => ({
+            options={({ route, navigation }) => ({
               headerTitle: getFocusedRouteNameFromRoute(route),
               headerLeft: () => (
                 <Button
